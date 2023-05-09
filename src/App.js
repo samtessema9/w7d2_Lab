@@ -27,7 +27,14 @@ function App() {
   };
 
   useEffect(() => {
-    getMovie('django unchained')
+    // pick a random 2 letter word 
+    let randomWord = ''
+    for (let i = 0; i < 2; i++) {
+      randomWord += String.fromCharCode(97 + Math.floor(Math.random() * 26));
+    }
+
+    getMovie(randomWord)
+
   }, [])
 
   return (
