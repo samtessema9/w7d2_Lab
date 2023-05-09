@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import './App.css';
+import MovieDisplay from "./components/MovieDisplay";
+import Form from "./components/Form";
+
+const apiKey = '17e810c0'
 
 function App() {
+
+  const [movieData, setMovieData] = useState({})
+
+  const getMovie = async (searchTerm) => {
+    try {
+        const response = await axios.get(
+          `http://www.omdbapi.com/?apikey=${apiKey}&t=${searchTerm}`
+        );
+          
+        const movie = response.data
+    
+        setMovieData(movie);
+    }
+    catch (error) {
+      console.error(error);
+    }
+    
+  };
+
+  useEffect(() => {
+    getMovie('django unchained')
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form getMovie={getMovie} />
+      <MovieDisplay movie={movieData}/>
     </div>
   );
 }
